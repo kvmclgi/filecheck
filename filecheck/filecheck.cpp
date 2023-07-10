@@ -19,7 +19,7 @@ std::set<std::wstring> target_files = { L"Client_25.exe", L"Client_26.exe",
 L"Client_27.exe", L"Client_28.exe",L"Client_29.exe", L"HsLoader.exe",
 L"HeadShotLoader.exe", L"AddictedLauncher.exe",L"AddictedLauncherx64.exe", L"AD.exe",
 L"AddictedLauncher.exe", L"cheese.exe", L"primal.exe", L"PrimalClient-V2_FREE.exe", 
-L"xing.exe" };
+L"xing.exe", L"BaseInput.json",  L"BaseInput_1.json", };
 
 
 /// <summary>
@@ -85,8 +85,9 @@ void update_title() {
 }
 
 int main() {
+    update_title();
     std::wcout << L"Starting file search..." << std::endl;
-
+    
     std::wstring path = L"C:\\";
 
     search_files(path);
