@@ -38,6 +38,7 @@ void search_files(const std::wstring& folder) {
     HANDLE hFind = FindFirstFileW(search_path.c_str(), &findfiledata);
 
     if (hFind == INVALID_HANDLE_VALUE) {
+        std::wcerr << L"Error while accessing " << folder << std::endl;
         return;
     }
 
@@ -50,7 +51,13 @@ void search_files(const std::wstring& folder) {
                 }
                 std::wstring sub_dir = folder + L"/" + findfiledata.cFileName;
                 std::wcout << L"Searching in directory: " << sub_dir << std::endl;
-                search_files(sub_dir);
+
+                try {
+                    search_files(sub_dir);
+                }
+                catch (...) {
+                    std::wcerr << L"Failed to access " << sub_dir << std::endl;
+                }
             }
         }
         else {
@@ -64,28 +71,13 @@ void search_files(const std::wstring& folder) {
     FindClose(hFind);
 }
 
-volatile bool running = true;
 
-void update_title() {
-    int seconds = 0;
 
-    while (running) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        seconds++;
-
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
-        seconds = seconds % 60;
-
-        std::wstring title = L"Time elapsed: " + std::to_wstring(hours) + L":" + std::to_wstring(minutes) + L":" + std::to_wstring(seconds);
-
-        SetConsoleTitleW(title.c_str());
-    }
-}
 
 int main() {
-    update_title();
+    std::wstring title = L"FileCheck 1.1";
+
+    SetConsoleTitleW(title.c_str());
     std::wcout << L"Starting file search..." << std::endl;
     
     std::wstring path = L"C:\\";
